@@ -2,8 +2,10 @@
 PLAN: "feat: signed release manifest (image + digest) for self-hosted updates"
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 17166003912072469892
+PR: https://github.com/webtyp/update/pull/2
+REVIEWED_COMMIT: bf386324faaac0bd9d112e4f106a941e4767efee
 ---
 
 > Read AGENTS.md at the repo root before any change.

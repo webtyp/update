@@ -5,6 +5,7 @@ Reusable self-update for Go CLIs: latest-version resolution, SHA256 checksum ver
 
 ## Features
 
+- **Signed manifests (container images)**: Prevents forged or moved releases by verifying a release signature over the image digest before pulling.
 - **Latest Version Resolution**: Find the latest release tag from a GitHub repository.
 - **Checksum Verification**: Verify downloaded assets against a `checksums.txt` file.
 - **Atomic Binary Replacement**: Swap the current binary with a new one, with automatic backup and rollback support.
@@ -17,7 +18,17 @@ See [docs/API.md](docs/API.md) for a concise list of exported symbols and their 
 
 ## Usage Examples
 
-### 1. Resolve, Download, and Verify
+### 1. Signed Manifests
+
+```go
+// Publisher creates and uploads the manifest and signature
+text, sig, err := update.SignManifest(update.Manifest{Version: "v0.0.78", Image: "ghcr.io/acme/shop", Digest: "sha256:9f86d0..."}, privateKey)
+// Updater verifies it and gets the pull reference
+m, err := update.VerifyManifest(downloadedText, downloadedSig, publicKey)
+pullRef := m.Reference() // "ghcr.io/acme/shop@sha256:9f86d0..."
+```
+
+### 2. Resolve, Download, and Verify
 
 ```go
 package main
