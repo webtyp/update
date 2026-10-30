@@ -2,6 +2,8 @@
 PLAN: "feat: signed release manifest (image + digest) for self-hosted updates"
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 17166003912072469892
 ---
 
 > Read AGENTS.md at the repo root before any change.
