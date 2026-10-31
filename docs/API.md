@@ -5,13 +5,18 @@
 - `SignManifest(m Manifest, privateKey []byte) (text, signature []byte, err error)`: Validates a manifest and returns its canonical text and signature.
 - `VerifyManifest(text, signature, publicKey []byte) (Manifest, error)`: Checks a signature over text and returns the parsed manifest.
 - `ManifestAsset`: The name of the Release asset that holds the manifest text (`"manifest.txt"`).
+- `ComposeAsset`: The name of the Release asset that holds the compose text (`"compose.yaml"`).
 - `SignatureAsset`: The name of the Release asset that holds the signature of the manifest text (`"manifest.sig"`).
 - `ErrManifestVersion`: Error for invalid semver manifest version.
 - `ErrManifestImage`: Error for missing manifest image or one carrying a tag or digest.
 - `ErrManifestDigest`: Error for malformed manifest digest.
 - `ErrManifestFormat`: Error for malformed manifest text format.
 - `ErrManifestSignature`: Error when a manifest signature does not match the public key.
+- `ErrManifestCompose`: Error for malformed manifest compose digest.
+- `ErrComposeMismatch`: Error when the compose.yaml does not match the signed digest.
 - `VerifyChecksum(asset string, data, sums []byte) error`: Verifies data's SHA256 against the entry for asset in a checksums.txt body.
+- `Digest(data []byte) string`: Returns the content address the manifest uses ("sha256:" + lowercase hex).
+- `Manifest.CheckCompose(data []byte) error`: Reports whether data is the compose file this manifest signed.
 - `ResolveLatestVersion(source string, download func(string) ([]byte, error)) (string, error)`: Returns the latest release tag name from a GitHub repository URL.
 - `IsOutdated(current, latest string) bool`: Reports whether the current version is strictly older than the latest semver version.
 - `DefaultDownload(url string) ([]byte, error)`: Downloads content from a URL with GitHub-specific headers and authentication support.
