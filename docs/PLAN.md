@@ -2,6 +2,8 @@
 PLAN: "feat!: the signed manifest also carries the compose.yaml digest"
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 4564400357546458216
 ---
 
 > Read AGENTS.md at the repo root before any change.
