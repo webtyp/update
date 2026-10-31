@@ -5,7 +5,7 @@ Reusable self-update for Go CLIs: latest-version resolution, SHA256 checksum ver
 
 ## Features
 
-- **Signed manifests (container images)**: Prevents forged or moved releases by verifying a release signature over the image digest before pulling.
+- **Signed manifests (container images)**: Prevents forged or moved releases by verifying a release signature over the image digest and compose file before pulling. The manifest names the image **and** the compose file; the updater calls `CheckCompose` before using the downloaded `compose.yaml`.
 - **Latest Version Resolution**: Find the latest release tag from a GitHub repository.
 - **Checksum Verification**: Verify downloaded assets against a `checksums.txt` file.
 - **Atomic Binary Replacement**: Swap the current binary with a new one, with automatic backup and rollback support.
@@ -22,10 +22,15 @@ See [docs/API.md](docs/API.md) for a concise list of exported symbols and their 
 
 ```go
 // Publisher creates and uploads the manifest and signature
-text, sig, err := update.SignManifest(update.Manifest{Version: "v0.0.78", Image: "ghcr.io/acme/shop", Digest: "sha256:9f86d0..."}, privateKey)
+text, sig, err := update.SignManifest(update.Manifest{Version: "v0.0.78", Image: "ghcr.io/acme/shop", Digest: "sha256:9f86d0...", ComposeDigest: "sha256:ba7816..."}, privateKey)
 // Updater verifies it and gets the pull reference
 m, err := update.VerifyManifest(downloadedText, downloadedSig, publicKey)
 pullRef := m.Reference() // "ghcr.io/acme/shop@sha256:9f86d0..."
+
+// The updater calls CheckCompose before using the downloaded compose.yaml
+if err := m.CheckCompose(downloadedCompose); err != nil {
+    panic(err) // refuse to use tampered compose file
+}
 ```
 
 ### 2. Resolve, Download, and Verify
